@@ -32,7 +32,7 @@ const lostGame = function () {
 function checkingNumber() {
     let num = number1.value;
 
-    if (score.innerHTML == 0) {
+    if (score.innerHTML == 1) {
         lostGame();
     }
     else if (num == r_value) {
@@ -59,6 +59,7 @@ check1.addEventListener('click', checkingNumber);
 
 // add enter event to the input field
 number1.addEventListener('keypress', function(event) {
+    console.log(event);
     if (event.key === "Enter") { 
        checkingNumber();
       event.preventDefault();
