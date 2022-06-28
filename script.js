@@ -9,12 +9,26 @@ const score = document.querySelector('.score');
 const highScore = document.querySelector('.highscore');
 const again = document.querySelector('.again');
 
-let r_value;    
+let r_value, playingAble = true;
 function generate_randomNumber() {
     r_value = Math.trunc(Math.random() * 20) + 1;
-    console.log("hello"+ r_value);
+    console.log(r_value);
 }
-generate_randomNumber();
+
+function reset() {
+    score.innerHTML = 20;
+    number1.value = null;
+    message.innerHTML = "Start guessing...";
+    r_num.innerHTML = '?';
+    document.body.style.backgroundColor = "#222";
+    playingAble = true;
+    generate_randomNumber();
+}
+reset();
+
+
+
+
 // decrease score 
 const decreseScore = function () {
     let scoreValue;
@@ -30,48 +44,45 @@ const lostGame = function () {
 
 // checking number
 function checkingNumber() {
-    let num = number1.value;
+    if (playingAble) {
+        let num = number1.value;
 
-    if (score.innerHTML == 1) {
-        lostGame();
-    }
-    else if (num == r_value) {
-        // display message
-        message.innerHTML = '🎉 Correct Number!';
-        document.body.style.backgroundColor = '#60b347';
-        r_num.innerHTML = r_value;
-
-        if (highScore.innerHTML == 0) {
-            highScore.innerHTML = score.innerHTML;
-        } else if (score.innerHTML > highScore.innerHTML) {
-            highScore.innerHTML = score.innerHTML;
+        if (num == r_value) {
+            // display message
+            message.innerHTML = '🎉 Correct Number!';
+            document.body.style.backgroundColor = '#60b347';
+            r_num.innerHTML = r_value;
+     
+            if (highScore.innerHTML == 0) {
+                highScore.innerHTML = score.innerHTML;
+            } else if (score.innerHTML > highScore.innerHTML) {
+                highScore.innerHTML = score.innerHTML;
+            }
+        } else if (num == 0) {
+            // display message
+            message.innerHTML = "⛔ No Number";
+        } else if(num != r_value){
+            if (score.innerHTML >  1) {
+                (num > r_value) ? message.innerHTML = "📈 Too High" : message.innerHTML = "📈 Too Low";
+            decreseScore();
+            } else {
+                lostGame();
+                playingAble = false;
+            }
+            
         }
-    } else if (num == 0) {
-        // display message
-        message.innerHTML = "⛔ No Number";
-    } else {
-        (num > r_value) ? message.innerHTML = "📈 Too High" : message.innerHTML = "📈 Too Low";
-        decreseScore();
     }
 }
 // add click event to the c heck button and check input value with randome value
 check1.addEventListener('click', checkingNumber);
 
-// add enter event to the input field
-number1.addEventListener('keypress', function(event) {
-    console.log(event);
-    if (event.key === "Enter") { 
-       checkingNumber();
-      event.preventDefault();
+// add enter event to the input field       
+number1.addEventListener('keypress', function (event) {
+    if (event.key === "Enter") {
+        checkingNumber();
+        event.preventDefault();
     }
 });
-    
+
 // add click event to the again button and reset all default parameter
-again.addEventListener('click', () => {
-    score.innerHTML = 20;
-    number1.value = null;
-    message.innerHTML = "Start guessing...";
-    r_num.innerHTML = '?';
-    document.body.style.backgroundColor = "#222";
-    generate_randomNumber();
-});
+again.addEventListener('click', reset);
