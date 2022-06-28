@@ -9,8 +9,12 @@ const score = document.querySelector('.score');
 const highScore = document.querySelector('.highscore');
 const again = document.querySelector('.again');
 
-let r_value = Math.trunc(Math.random() * 20) + 1;
-
+let r_value;    
+function generate_randomNumber() {
+    r_value = Math.trunc(Math.random() * 20) + 1;
+    console.log("hello"+ r_value);
+}
+generate_randomNumber();
 // decrease score 
 const decreseScore = function () {
     let scoreValue;
@@ -23,11 +27,15 @@ const lostGame = function () {
     message.innerHTML = "💥 You Lost the Game";
     score.innerHTML = 0;
 }
-// add click event to the c heck button and check input value with randome value
-check1.addEventListener('click', () => {
 
+// checking number
+function checkingNumber() {
     let num = number1.value;
-    if (num == r_value) {
+
+    if (score.innerHTML == 0) {
+        lostGame();
+    }
+    else if (num == r_value) {
         // display message
         message.innerHTML = '🎉 Correct Number!';
         document.body.style.backgroundColor = '#60b347';
@@ -41,22 +49,22 @@ check1.addEventListener('click', () => {
     } else if (num == 0) {
         // display message
         message.innerHTML = "⛔ No Number";
-    } else if (num > r_value) {
-        (score.innerHTML > 1) ? (
-            // display message
-            message.innerHTML = "📈 Too High",
-            decreseScore()
-        ):lostGame();
+    } else {
+        (num > r_value) ? message.innerHTML = "📈 Too High" : message.innerHTML = "📈 Too Low";
+        decreseScore();
+    }
+}
+// add click event to the c heck button and check input value with randome value
+check1.addEventListener('click', checkingNumber);
 
-    } else if (num < r_value) {
-        (score.innerHTML > 1) ? (
-            // display message
-            message.innerHTML = "📈 Too Low",
-            decreseScore()
-        ):lostGame();
+// add enter event to the input field
+number1.addEventListener('keypress', function(event) {
+    if (event.key === "Enter") { 
+       checkingNumber();
+      event.preventDefault();
     }
 });
-
+    
 // add click event to the again button and reset all default parameter
 again.addEventListener('click', () => {
     score.innerHTML = 20;
@@ -64,5 +72,5 @@ again.addEventListener('click', () => {
     message.innerHTML = "Start guessing...";
     r_num.innerHTML = '?';
     document.body.style.backgroundColor = "#222";
-    r_value = Math.trunc(Math.random() * 20) + 1;
+    generate_randomNumber();
 });
