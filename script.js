@@ -18,6 +18,8 @@ function generate_randomNumber() {
 function reset() {
     score.innerHTML = 20;
     number1.value = null;
+    check1.disabled = false;
+    check1.style.backgroundColor = 'white';
     message.innerHTML = "Start guessing...";
     r_num.innerHTML = '?';
     document.body.style.backgroundColor = "#222";
@@ -49,9 +51,12 @@ function checkingNumber() {
 
         if (num == r_value) {
             // display message
-            message.innerHTML = '🎉 Correct Number!';
+            message.innerHTML = '🎉 Correct Number! and \n Click Again if you like to continue !    ';
             document.body.style.backgroundColor = '#60b347';
             r_num.innerHTML = r_value;
+            check1.disabled = true;
+            check1.style.backgroundColor = 'gray';
+            playingAble = false;
      
             if (highScore.innerHTML == 0) {
                 highScore.innerHTML = score.innerHTML;
